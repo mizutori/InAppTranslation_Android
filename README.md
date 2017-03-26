@@ -4,7 +4,7 @@ Just by replacing `android:text` tag with `app:localizeText`, your app starts sh
 
 ### Install
 ```groovy
-compile 'com.goldrushcomputing.inapptranslation:inapptranslation:0.9.0'
+compile 'com.goldrushcomputing.inapptranslation:inapptranslation:0.9.1'
 ```
 
 
