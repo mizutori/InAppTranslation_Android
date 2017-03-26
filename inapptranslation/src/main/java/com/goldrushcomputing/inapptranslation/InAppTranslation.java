@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Locale;
 
 /**
@@ -171,32 +172,34 @@ public class InAppTranslation {
             String source = (String) params[1];
             String target = (String) params[2];
 
-            String urlString;
-
-            if(query == null || query.isEmpty()){
-                Log.d(TAG, "query is null or empty");
-                return query;
-            }
-
-            String apiKey = BuildConfig.GoogleTranslateApiKey;
-            if(apiKey == null || apiKey.isEmpty()){
-                Log.d(TAG, "Google Translate Api Key is not set in local.properties");
-                return query;
-            }
-
-            if(source == null && target != null){
-                urlString = String.format(urlTemplateWithoutSource, apiKey, target, query);
-            }else if(source != null && target != null){
-                urlString = String.format(urlTemplate, apiKey, source, target, query);
-            }else{
-                Log.d(TAG, "The source and target langauges are both not set.");
-                return query;
-            }
-
             String translatedText = null;
             HttpURLConnection urlConnection = null;
 
             try {
+                String urlString;
+
+                if(query == null || query.isEmpty()){
+                    Log.d(TAG, "query is null or empty");
+                    return query;
+                }
+
+                String apiKey = BuildConfig.GoogleTranslateApiKey;
+                if(apiKey == null || apiKey.isEmpty()){
+                    Log.d(TAG, "Google Translate Api Key is not set in local.properties");
+                    return query;
+                }
+
+                String queryEncoded = URLEncoder.encode(query, "utf-8");
+
+                if(source == null && target != null){
+                    urlString = String.format(urlTemplateWithoutSource, apiKey, target, queryEncoded);
+                }else if(source != null && target != null){
+                    urlString = String.format(urlTemplate, apiKey, source, target, queryEncoded);
+                }else{
+                    Log.d(TAG, "The source and target langauges are both not set.");
+                    return query;
+                }
+
                 URL url = new URL(urlString);
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setReadTimeout(10000);
@@ -222,23 +225,41 @@ public class InAppTranslation {
                         JSONTokener json = new JSONTokener(result.toString());
                         if (json != null) {
                             JSONObject rootObject = (JSONObject) json.nextValue();
-                            Log.i(TAG, "JSONObject = " + rootObject.toString());
-                            JSONObject dataObject = rootObject.getJSONObject("data");
-                            JSONArray translations = dataObject.getJSONArray("translations");
-                            for (int i = 0; i < translations.length(); i++) {
-                                JSONObject translation = translations.getJSONObject(i);
-                                translatedText = translation.getString("translatedText");
-                                break;
+                            if(rootObject != null){
+                                JSONObject dataObject = rootObject.getJSONObject("data");
+                                if(dataObject != null){
+                                    JSONArray translations = dataObject.getJSONArray("translations");
+                                    for (int i = 0; i < translations.length(); i++) {
+                                        JSONObject translation = translations.getJSONObject(i);
+                                        translatedText = translation.getString("translatedText");
+                                        break;
+                                    }
+                                }else{
+                                    Log.e(TAG, "[Google Translate API] Data is missing in the response" + rootObject.toString());
+                                }
+                            }else{
+                                Log.e(TAG, "[Google Translate API] Root json object is missing in the response");
                             }
                         }
                         break;
-                    case HttpURLConnection.HTTP_UNAUTHORIZED:
-                        break;
                     default:
+                        InputStream errorIn = new BufferedInputStream(urlConnection.getErrorStream());
+                        BufferedReader errorReader = new BufferedReader(new InputStreamReader(errorIn));
+
+                        StringBuilder errorResult = new StringBuilder();
+                        String errorLine;
+                        while ((errorLine = errorReader.readLine()) != null) {
+                            errorResult.append(errorLine);
+                        }
+                        errorIn.close();
+                        String errorResponseString = errorResult.toString();
+
+                        String errorText = String.format("Failed to get data from Google Translate. Status code = %d, Response = %s", resp, errorResponseString);
+                        Log.d(TAG, errorText);
                         break;
                 }
             } catch (Exception e) {
-                Log.d(TAG, "get translation error");
+                Log.d(TAG, "Got exception while accessing Google Translation");
                 e.printStackTrace();
             } finally {
                 if(urlConnection != null){
