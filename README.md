@@ -4,7 +4,7 @@ Just by replacing `android:text` tag with `app:localizeText`, your app starts sh
 
 ### Install
 ```groovy
-compile 'com.goldrushcomputing.inapptranslation:inapptranslation:0.9.1'
+compile 'com.goldrushcomputing.inapptranslation:inapptranslation:0.9.2'
 ```
 
 
@@ -66,6 +66,26 @@ For EditText's hint text, you can use below hint tag
 ```java
 app:localizeHint="@{`Type your name`}"
 ```
+
+### Work with Switch
+Changing `textOff` and `textOn` property of Switch from Java code doesn't change the actual texts on the UI. It seems like [a bug](http://stackoverflow.com/questions/19790440/can-not-change-switch-text-on-off-at-runtime) in Android.  
+Due to this limitation, dynamically translated texts for Switch textOn/Off properties are not displayed. To workaround this, I've added a class called `IATSwitch`.  
+
+To use this, first import IATSwitch by adding the code below in `<data></data>` section in your layout.xml file.
+```xml
+<import type="com.goldrushcomputing.inapptranslation.IATSwitch" />
+```
+Then, replace Switch with IATSwtich as below
+```java
+<com.goldrushcomputing.inapptranslation.IATSwitch
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:showText="true"
+    app:localizeTextOff="@{`Off`}"
+    app:localizeTextOn="@{`Active`}"/>
+```
+
+
 
 ### How Translation Works
 InAppTranslation library uses Google Translate api to translate texts.  

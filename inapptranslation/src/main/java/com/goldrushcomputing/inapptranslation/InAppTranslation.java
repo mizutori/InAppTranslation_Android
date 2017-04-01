@@ -128,13 +128,10 @@ public class InAppTranslation {
                         }
                     }else if (view instanceof Switch){
                         Switch switchWidget = (Switch)view;
-
                         if(type == TargetTextType.TextOff){
                             switchWidget.setTextOff(result);
-
                         }else if(type == TargetTextType.TextOn){
                             switchWidget.setTextOn(result);
-
                         }else if(type == TargetTextType.Text){
                             switchWidget.setText(result);
                         }

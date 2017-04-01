@@ -5,6 +5,8 @@
 
         <import type="com.goldrushcomputing.inapptranslation.InAppTranslation" />
 
+        <import type="com.goldrushcomputing.inapptranslation.IATSwitch" />
+
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -16,11 +18,9 @@
         tools:showIn="@layout/activity_main">
 
         <LinearLayout
-            android:layout_width="368dp"
-            android:layout_height="551dp"
-            android:orientation="vertical"
-            tools:layout_editor_absoluteY="8dp"
-            tools:layout_editor_absoluteX="8dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -53,19 +53,17 @@
                 android:layout_height="wrap_content"
                 app:localizeText="@{`Buy a ticket`}"/>
 
-            <Switch
+            <com.goldrushcomputing.inapptranslation.IATSwitch
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:showText="true"
                 app:localizeTextOff="@{`Off`}"
-                app:localizeTextOn="@{`On`}"/>
-
+                app:localizeTextOn="@{`Active`}"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:localizeHint="@{`Type your name`}"/>
-
 
         </LinearLayout>
 
