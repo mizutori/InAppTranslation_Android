@@ -61,7 +61,7 @@ ext {
     siteUrl = 'https://github.com/mizutori/InAppTranslation_Android'
     gitUrl = 'https://github.com/mizutori/InAppTranslation_Android.git'
 
-    libraryVersion = '0.9.2'
+    libraryVersion = '0.9.3'
 
     developerId = 'mizutori'
     developerName = 'Takamitsu Mizutori'

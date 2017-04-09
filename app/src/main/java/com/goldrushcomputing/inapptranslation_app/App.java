@@ -15,6 +15,7 @@ public class App extends Application {
         super.onCreate();
 
         InAppTranslation.setSourceLanguage("en");
+        //InAppTranslation.clearCache(this);
 
         //InAppTranslation.setTargetLanguage("ja");
     }
