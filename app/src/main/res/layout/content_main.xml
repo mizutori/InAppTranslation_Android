@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
 
-        <import type="com.goldrushcomputing.inapptranslation.InAppTranslation" />
 
         <import type="com.goldrushcomputing.inapptranslation.IATSwitch" />
 

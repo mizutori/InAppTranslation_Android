@@ -40,7 +40,6 @@ public class InAppTranslation {
     private static InAppTranslation sharedInstance = null;
     private String source = null;
     private String target = null;
-
     public enum TargetTextType {
         Text,
         TextOn,

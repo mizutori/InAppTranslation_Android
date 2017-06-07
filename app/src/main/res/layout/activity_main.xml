@@ -2,7 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="android.view.View" />
-        <import type="com.goldrushcomputing.inapptranslation.InAppTranslation" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
