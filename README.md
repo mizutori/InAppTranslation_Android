@@ -17,11 +17,11 @@ inapptranslation.google_translate_apikey="Your_Google_Translate_API_Key"
 ```
 (Don't share the local.properties file on GitHub.)
 
-### Prerequisite
-If your project is not ready for Data Binding, please do so by following  
-[Data Binding Library - Android Developers](https://developer.android.com/topic/libraries/data-binding/index.html)  
-
 ### Use
+(If your project is not ready for Data Binding, please do so by following  
+[Data Binding Library - Android Developers](https://developer.android.com/topic/libraries/data-binding/index.html)  )
+
+It is very simple to use InAppTranslation. <br>
 Instead of using `android:text="Hello"`, use the tag below.
 ```java
 app:localizeText="@{`Hello`}"
